@@ -1,5 +1,4 @@
-export default async function handler(req, res) {
-  // Allow CORS for Shopify
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -11,36 +10,40 @@ export default async function handler(req, res) {
   if (!message) return res.status(400).json({ error: 'No message' });
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01'
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        'HTTP-Referer': 'https://mycenza.pk',
+        'X-Title': 'MYCENZA Chat Bot'
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
+        model: 'anthropic/claude-haiku-4-5',
         max_tokens: 500,
-        system: `You are a helpful assistant for MYCENZA, a Pakistani wellness/health brand. 
-Answer questions about products concisely. If recommending a product, return JSON like:
-{"answer": "your reply", "recommended_products": [{"title": "Product Name", "reason": "why", "url": "/products/slug"}]}
-Otherwise just return: {"answer": "your reply", "recommended_products": []}`,
-        messages: [{ role: 'user', content: message }]
+        messages: [
+          {
+            role: 'system',
+            content: `You are a helpful assistant for MYCENZA, a Pakistani health/wellness brand. Answer questions concisely. Always respond in this exact JSON format: {"answer": "your reply here", "recommended_products": []}`
+          },
+          {
+            role: 'user',
+            content: message
+          }
+        ]
       })
     });
 
     const data = await response.json();
-    const text = data.content?.[0]?.text || '{}';
-    
+    const text = data.choices?.[0]?.message?.content || '{"answer":"Sorry, no response.","recommended_products":[]}';
+
     try {
-      const parsed = JSON.parse(text);
-      return res.status(200).json(parsed);
+      return res.status(200).json(JSON.parse(text));
     } catch {
       return res.status(200).json({ answer: text, recommended_products: [] });
     }
 
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ answer: 'Sorry, something went wrong.', recommended_products: [] });
+    return res.status(500).json({ answer: 'Something went wrong.', recommended_products: [] });
   }
-}
+};
