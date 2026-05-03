@@ -13,17 +13,23 @@ module.exports = async function handler(req, res) {
     {
       title: "Chaga Mushroom Capsules 1000MG",
       url: "https://mycenza.pk/products/chaga-mushroom-capsules-1000mg",
-      description: "Antioxidant-rich functional mushroom capsules. Best for immune support, balance, vitality and daily wellness routines. Contains naturally occurring antioxidant compounds."
+      description: "Antioxidant-rich functional mushroom capsules. Best for immune support, balance, vitality and daily wellness routines.",
+      price: "Rs. 3,349.00",
+      image: "https://mycenza-pk.myshopify.com/cdn/shop/files/chaga-mushroom-capsules.jpg"
     },
     {
       title: "Turkey Tail Capsules 1000MG",
       url: "https://mycenza.pk/products/turkey-tail-capsules-immune-gut-support",
-      description: "Functional mushroom capsules with PSK and PSP compounds. Best for immune support, digestive wellness and gut health."
+      description: "Functional mushroom capsules with PSK and PSP compounds. Best for immune support and gut health.",
+      price: "Rs. 3,349.00",
+      image: "https://mycenza-pk.myshopify.com/cdn/shop/files/turkey-tail-capsules.jpg"
     },
     {
       title: "Red Reishi Capsules 1000MG",
       url: "https://mycenza.pk/products/red-reishi-capsules-1000mg",
-      description: "Premium Ganoderma lucidum functional mushroom capsules. Best for immune support, stress balance, vitality and daily wellness."
+      description: "Premium Ganoderma lucidum capsules. Best for immune support, stress balance and daily vitality.",
+      price: "Rs. 3,349.00",
+      image: "https://mycenza-pk.myshopify.com/cdn/shop/files/red-reishi-capsules.jpg"
     }
   ];
 
@@ -37,7 +43,7 @@ Here are ALL the products available in our store:
 ${productList}
 
 Rules:
-1. Only recommend products from the list above — never suggest products we don't carry
+1. Only recommend products from the list above
 2. Match customer needs to the right product based on their health concern
 3. Always respond in this EXACT JSON format with no extra text outside it:
 {"answer": "your helpful reply here", "recommended_products": [{"title": "Product Name", "reason": "one sentence on why this helps them", "url": "product url here"}]}
@@ -76,6 +82,17 @@ Rules:
       const jsonMatch = text.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         const parsed = JSON.parse(jsonMatch[0]);
+        // Attach image and price from products array
+        if (parsed.recommended_products && parsed.recommended_products.length) {
+          parsed.recommended_products = parsed.recommended_products.map(rec => {
+            const match = products.find(p => p.url === rec.url || p.title === rec.title);
+            return {
+              ...rec,
+              image: match?.image || '',
+              price: match?.price || ''
+            };
+          });
+        }
         return res.status(200).json(parsed);
       }
       return res.status(200).json({ answer: text, recommended_products: [] });
