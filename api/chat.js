@@ -24,7 +24,7 @@ module.exports = async function handler(req, res) {
         messages: [
           {
             role: 'system',
-            content: `You are a helpful assistant for MYCENZA, a Pakistani health/wellness brand. Answer questions concisely. Always respond in this exact JSON format: {"answer": "your reply here", "recommended_products": []}`
+            content: `You are a helpful assistant for MYCENZA, a Pakistani health and wellness brand. Answer questions helpfully and concisely. Always reply in plain text only — no JSON, no markdown, just a normal helpful answer.`
           },
           {
             role: 'user',
@@ -35,15 +35,29 @@ module.exports = async function handler(req, res) {
     });
 
     const data = await response.json();
-    const text = data.choices?.[0]?.message?.content || '{"answer":"Sorry, no response.","recommended_products":[]}';
+    
+    // Log for debugging
+    console.log('OpenRouter response:', JSON.stringify(data));
 
-    try {
-      return res.status(200).json(JSON.parse(text));
-    } catch {
-      return res.status(200).json({ answer: text, recommended_products: [] });
+    const text = data.choices?.[0]?.message?.content;
+
+    if (!text) {
+      return res.status(200).json({ 
+        answer: 'Sorry, I could not get a response. Please try again.', 
+        recommended_products: [] 
+      });
     }
 
+    return res.status(200).json({ 
+      answer: text, 
+      recommended_products: [] 
+    });
+
   } catch (err) {
-    return res.status(500).json({ answer: 'Something went wrong.', recommended_products: [] });
+    console.error('Error:', err);
+    return res.status(500).json({ 
+      answer: 'Something went wrong. Please try again.', 
+      recommended_products: [] 
+    });
   }
 };
