@@ -10,59 +10,62 @@ module.exports = async function handler(req, res) {
     const { message, history = [] } = req.body || {};
     if (!message) return res.status(400).json({ error: 'No message' });
 
+    const apiKey = process.env.OPENROUTER_API_KEY;
+    if (!apiKey) return res.status(500).json({ error: 'Missing OPENROUTER_API_KEY' });
+
     const products = [
       {
-        title: "Chaga Mushroom Capsules 1000MG",
-        url: "https://mycenza.pk/products/chaga-mushroom-capsules-1000mg-antioxidant-immune-support-mycenza",
-        description: "Chaga (Inonotus obliquus) is one of the most antioxidant-rich substances on Earth, scoring exceptionally high on the ORAC scale. MYCENZA's Chaga capsules use 100% fruiting body extract — no mycelium filler — standardised to active beta-glucans and betulinic acid. Chaga has been used in traditional Siberian and Asian medicine for centuries as an immune tonic and anti-ageing adaptogen. Modern research supports its role in reducing oxidative stress, modulating immune responses, supporting healthy inflammation levels, and promoting skin health through its melanin and antioxidant content.",
+        title: 'Chaga Mushroom Capsules 1000MG',
+        url: 'https://mycenza.pk/products/chaga-mushroom-capsules-1000mg-antioxidant-immune-support-mycenza',
+        description: 'Chaga (Inonotus obliquus) is one of the most antioxidant-rich substances on Earth, scoring exceptionally high on the ORAC scale. MYCENZA\'s Chaga capsules use 100% fruiting body extract — no mycelium filler — standardised to active beta-glucans and betulinic acid. Chaga has been used in traditional Siberian and Asian medicine for centuries as an immune tonic and anti-ageing adaptogen. Modern research supports its role in reducing oxidative stress, modulating immune responses, supporting healthy inflammation levels, and promoting skin health through its melanin and antioxidant content.',
         benefits: [
-          "Extremely high antioxidant (ORAC) score — fights free radical damage",
-          "Immune system modulation via beta-glucans",
-          "Supports healthy inflammation response",
-          "Skin health — melanin and antioxidants protect skin cells",
-          "Energy and daily vitality without stimulants",
-          "Liver support and detoxification",
-          "May support healthy blood sugar and cholesterol levels"
+          'Extremely high antioxidant (ORAC) score — fights free radical damage',
+          'Immune system modulation via beta-glucans',
+          'Supports healthy inflammation response',
+          'Skin health — melanin and antioxidants protect skin cells',
+          'Energy and daily vitality without stimulants',
+          'Liver support and detoxification',
+          'May support healthy blood sugar and cholesterol levels'
         ],
-        bestFor: "immunity, antioxidants, energy, inflammation, skin health, anti-aging, oxidative stress, liver, daily wellness, general health",
-        price: "Rs. 3,349.00",
-        image: "https://mycenza-pk.myshopify.com/cdn/shop/files/chaga-mushroom-capsules.jpg"
+        bestFor: 'immunity, antioxidants, energy, inflammation, skin health, anti-aging, oxidative stress, liver, daily wellness, general health',
+        price: 'Rs. 3,349.00',
+        image: 'https://mycenza-pk.myshopify.com/cdn/shop/files/chaga-mushroom-capsules.jpg'
       },
       {
-        title: "Red Reishi Capsules 1000MG",
-        url: "https://mycenza.pk/products/red-reishi-capsules-immune-vitality-support-1000mg",
-        description: "Red Reishi (Ganoderma lucidum), known as the Mushroom of Immortality in traditional Chinese medicine, has over 2,000 years of documented use. MYCENZA's Red Reishi capsules deliver 1000mg of pure fruiting body extract rich in triterpenes (ganoderic acids), polysaccharides, and beta-glucans. Reishi is the most studied adaptogenic mushroom for stress, sleep, and immune regulation. Triterpenes give Reishi its signature bitter taste and are responsible for its calming, cortisol-regulating effects. It works by supporting the HPA (hypothalamic-pituitary-adrenal) axis — your body's central stress response system.",
+        title: 'Red Reishi Capsules 1000MG',
+        url: 'https://mycenza.pk/products/red-reishi-capsules-immune-vitality-support-1000mg',
+        description: 'Red Reishi (Ganoderma lucidum), known as the Mushroom of Immortality in traditional Chinese medicine, has over 2,000 years of documented use. MYCENZA\'s Red Reishi capsules deliver 1000mg of pure fruiting body extract rich in triterpenes (ganoderic acids), polysaccharides, and beta-glucans. Reishi is the most studied adaptogenic mushroom for stress, sleep, and immune regulation. Triterpenes give Reishi its signature bitter taste and are responsible for its calming, cortisol-regulating effects. It works by supporting the HPA (hypothalamic-pituitary-adrenal) axis — your body\'s central stress response system.',
         benefits: [
-          "Powerful adaptogen — helps body manage physical and mental stress",
-          "Improves sleep quality and depth",
-          "Immune modulation",
-          "Cortisol regulation",
-          "Supports heart health and healthy blood pressure",
-          "Anti-inflammatory and antioxidant protection",
-          "Mood support — reduces anxiety and promotes calm focus",
-          "Liver protection and detoxification support"
+          'Powerful adaptogen — helps body manage physical and mental stress',
+          'Improves sleep quality and depth',
+          'Immune modulation',
+          'Cortisol regulation',
+          'Supports heart health and healthy blood pressure',
+          'Anti-inflammatory and antioxidant protection',
+          'Mood support — reduces anxiety and promotes calm focus',
+          'Liver protection and detoxification support'
         ],
-        bestFor: "stress, anxiety, sleep, insomnia, cortisol, relaxation, adaptogen, immune, heart health, mood, burnout, fatigue, vitality, longevity",
-        price: "Rs. 3,349.00",
-        image: "https://mycenza-pk.myshopify.com/cdn/shop/files/red-reishi-capsules.jpg"
+        bestFor: 'stress, anxiety, sleep, insomnia, cortisol, relaxation, adaptogen, immune, heart health, mood, burnout, fatigue, vitality, longevity',
+        price: 'Rs. 3,349.00',
+        image: 'https://mycenza-pk.myshopify.com/cdn/shop/files/red-reishi-capsules.jpg'
       },
       {
-        title: "Turkey Tail Capsules 1000MG",
-        url: "https://mycenza.pk/products/turkey-tail-capsules-immune-gut-support-1000mg",
-        description: "Turkey Tail (Trametes versicolor) is the most clinically researched medicinal mushroom in the world. MYCENZA's Turkey Tail capsules deliver 1000mg of 100% fruiting body extract containing PSK (Polysaccharide-K) and PSP (Polysaccharide-Peptide) — the two most studied immune-active compounds in mushroom science. PSK is so well-established that it is approved as a complementary cancer therapy adjunct in Japan. Turkey Tail directly feeds beneficial gut bacteria (Lactobacillus and Bifidobacterium strains), making it one of the most effective prebiotic mushrooms. A healthy gut is foundational to immunity, mood, digestion, and overall health.",
+        title: 'Turkey Tail Capsules 1000MG',
+        url: 'https://mycenza.pk/products/turkey-tail-capsules-immune-gut-support-1000mg',
+        description: 'Turkey Tail (Trametes versicolor) is the most clinically researched medicinal mushroom in the world. MYCENZA\'s Turkey Tail capsules deliver 1000mg of 100% fruiting body extract containing PSK (Polysaccharide-K) and PSP (Polysaccharide-Peptide) — the two most studied immune-active compounds in mushroom science. PSK is so well-established that it is approved as a complementary cancer therapy adjunct in Japan. Turkey Tail directly feeds beneficial gut bacteria (Lactobacillus and Bifidobacterium strains), making it one of the most effective prebiotic mushrooms. A healthy gut is foundational to immunity, mood, digestion, and overall health.',
         benefits: [
-          "Deep immune system activation via PSK and PSP compounds",
-          "Powerful prebiotic — feeds good gut bacteria directly",
-          "Gut microbiome restoration and diversity support",
-          "Digestive health — reduces bloating, improves bowel regularity",
-          "Post-antibiotic gut recovery",
-          "Supports the gut-brain axis",
-          "Anti-inflammatory in the gut lining",
-          "Recovery support after illness or intense physical exertion"
+          'Deep immune system activation via PSK and PSP compounds',
+          'Powerful prebiotic — feeds good gut bacteria directly',
+          'Gut microbiome restoration and diversity support',
+          'Digestive health — reduces bloating, improves bowel regularity',
+          'Post-antibiotic gut recovery',
+          'Supports the gut-brain axis',
+          'Anti-inflammatory in the gut lining',
+          'Recovery support after illness or intense physical exertion'
         ],
-        bestFor: "gut health, digestion, microbiome, immunity, bloating, IBS, bowel health, prebiotics, recovery, antibiotic recovery, leaky gut, inflammation",
-        price: "Rs. 3,349.00",
-        image: "https://mycenza-pk.myshopify.com/cdn/shop/files/turkey-tail-capsules.jpg"
+        bestFor: 'gut health, digestion, microbiome, immunity, bloating, IBS, bowel health, prebiotics, recovery, antibiotic recovery, leaky gut, inflammation',
+        price: 'Rs. 3,349.00',
+        image: 'https://mycenza-pk.myshopify.com/cdn/shop/files/turkey-tail-capsules.jpg'
       }
     ];
 
@@ -132,7 +135,6 @@ Return valid JSON only, with no markdown fences:
 If no product recommendation applies, return: { "answer": "...", "recommended_products": [] }`;
 
     const messages = [{ role: 'system', content: systemPrompt }];
-
     for (const turn of history.slice(-10)) {
       if (turn && (turn.role === 'user' || turn.role === 'assistant')) {
         messages.push({ role: turn.role, content: String(turn.content || '') });
@@ -141,85 +143,76 @@ If no product recommendation applies, return: { "answer": "...", "recommended_pr
     messages.push({ role: 'user', content: String(message) });
 
     const MODELS = [
-      'deepseek/deepseek-chat-v3-0324:free',
-      'meta-llama/llama-3.3-70b-instruct:free',
-      'google/gemini-2.0-flash-exp:free'
+      'openai/gpt-4o-mini',
+      'anthropic/claude-3-haiku',
+      'meta-llama/llama-3.1-8b-instruct:free'
     ];
 
-    let lastError = null;
-
     for (const model of MODELS) {
+      const orRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': 'https://mycenza.pk',
+          'X-Title': 'MYCENZA Zara Chat Assistant'
+        },
+        body: JSON.stringify({
+          model,
+          max_tokens: 1200,
+          temperature: 0.65,
+          messages,
+          response_format: { type: 'json_object' }
+        })
+      });
+
+      const text = await orRes.text();
+
+      if (!orRes.ok) {
+        continue;
+      }
+
+      let orData;
       try {
-        const orRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-            'Content-Type': 'application/json',
-            'HTTP-Referer': 'https://mycenza.pk',
-            'X-Title': 'MYCENZA Zara Chat Assistant'
-          },
-          body: JSON.stringify({
-            model,
-            max_tokens: 1200,
-            temperature: 0.65,
-            messages,
-            response_format: { type: 'json_object' }
+        orData = JSON.parse(text);
+      } catch {
+        continue;
+      }
+
+      const rawContent = orData?.choices?.[0]?.message?.content || '';
+      if (!rawContent) continue;
+
+      try {
+        const clean = rawContent
+          .replace(/^```json\\s*/i, '')
+          .replace(/^```\\s*/i, '')
+          .replace(/```\\s*$/i, '')
+          .trim();
+
+        const parsed = JSON.parse(clean);
+
+        const enriched = (parsed.recommended_products || [])
+          .map(rec => {
+            const match = products.find(p => p.title === rec.title);
+            return {
+              title: rec.title || match?.title || '',
+              url: rec.url || match?.url || '#',
+              image: rec.image || match?.image || '',
+              price: rec.price || match?.price || '',
+              reason: rec.reason || ''
+            };
           })
-        });
-
-        const text = await orRes.text();
-
-        if (!orRes.ok) {
-          lastError = `HTTP ${orRes.status}: ${text.slice(0, 200)}`;
-          continue;
-        }
-
-        let orData;
-        try {
-          orData = JSON.parse(text);
-        } catch {
-          lastError = 'Invalid JSON from OpenRouter';
-          continue;
-        }
-
-        const rawContent = orData?.choices?.[0]?.message?.content || '';
-        if (!rawContent) {
-          lastError = 'Empty model response';
-          continue;
-        }
-
-        let parsed;
-        try {
-          const clean = rawContent
-            .replace(/^```json\s*/i, '')
-            .replace(/^```\s*/i, '')
-            .replace(/```\s*$/i, '')
-            .trim();
-          parsed = JSON.parse(clean);
-        } catch {
-          return res.status(200).json({
-            answer: rawContent,
-            recommended_products: []
-          });
-        }
-
-        const enriched = (parsed.recommended_products || []).map(rec => {
-          const match = products.find(p => p.title === rec.title);
-          return {
-            title: rec.title || match?.title || '',
-            url: rec.url || match?.url || '#',
-            image: rec.image || match?.image || '',
-            price: rec.price || match?.price || '',
-            reason: rec.reason || ''
-          };
-        }).filter(p => p.title);
+          .filter(p => p.title);
 
         return res.status(200).json({
           answer: parsed.answer || 'How can I help you with your wellness goals today?',
           recommended_products: enriched
         });
-      } catch (err) {
-        lastError = err.message;
+      } catch {
+        return res.status(200).json({
+          answer: rawContent,
+          recommended_products: []
+        });
       }
     }
 
