@@ -9,197 +9,242 @@ module.exports = async function handler(req, res) {
   const { message, history = [] } = req.body;
   if (!message) return res.status(400).json({ error: 'No message' });
 
-  /* ── PRODUCT CATALOG ── */
+  /* ─────────────────────────────────────────
+     REAL MYCENZA PRODUCT CATALOG (3 products)
+  ───────────────────────────────────────── */
   const products = [
     {
       title: "Chaga Mushroom Capsules 1000MG",
-      url: "https://mycenza.pk/products/chaga-mushroom-capsules-1000mg",
-      description: "Premium Chaga mushroom (Inonotus obliquus) fruiting body extract. Rich in antioxidants, beta-glucans, and betulinic acid.",
-      benefits: ["Powerful antioxidant protection", "Immune system support", "Anti-inflammatory", "Energy and vitality", "Skin health"],
-      bestFor: "immunity, antioxidants, energy, inflammation, skin health, daily wellness",
+      url: "https://mycenza.pk/products/chaga-mushroom-capsules-1000mg-antioxidant-immune-support-mycenza",
+      description: `Chaga (Inonotus obliquus) is one of the most antioxidant-rich substances on Earth, scoring exceptionally high on the ORAC scale. MYCENZA's Chaga capsules use 100% fruiting body extract — no mycelium filler — standardised to active beta-glucans and betulinic acid. Chaga has been used in traditional Siberian and Asian medicine for centuries as an immune tonic and anti-ageing adaptogen. Modern research supports its role in reducing oxidative stress, modulating immune responses, supporting healthy inflammation levels, and promoting skin health through its melanin and antioxidant content.`,
+      benefits: [
+        "Extremely high antioxidant (ORAC) score — fights free radical damage",
+        "Immune system modulation via beta-glucans",
+        "Supports healthy inflammation response",
+        "Skin health — melanin and antioxidants protect skin cells",
+        "Energy and daily vitality without stimulants",
+        "Liver support and detoxification",
+        "May support healthy blood sugar and cholesterol levels"
+      ],
+      bestFor: "immunity, antioxidants, energy, inflammation, skin health, anti-aging, oxidative stress, liver, daily wellness, general health",
       price: "Rs. 3,349.00",
       image: "https://mycenza-pk.myshopify.com/cdn/shop/files/chaga-mushroom-capsules.jpg"
     },
     {
+      title: "Red Reishi Capsules 1000MG",
+      url: "https://mycenza.pk/products/red-reishi-capsules-immune-vitality-support-1000mg",
+      description: `Red Reishi (Ganoderma lucidum), known as the Mushroom of Immortality in traditional Chinese medicine, has over 2,000 years of documented use. MYCENZA's Red Reishi capsules deliver 1000mg of pure fruiting body extract rich in triterpenes (ganoderic acids), polysaccharides, and beta-glucans. Reishi is the most studied adaptogenic mushroom for stress, sleep, and immune regulation. Triterpenes give Reishi its signature bitter taste and are responsible for its calming, cortisol-regulating effects. It works by supporting the HPA (hypothalamic-pituitary-adrenal) axis — your body's central stress response system.`,
+      benefits: [
+        "Powerful adaptogen — helps body manage physical and mental stress",
+        "Improves sleep quality and depth (not a sedative, but regulates sleep cycles)",
+        "Immune modulation — balances overactive and underactive immune responses",
+        "Cortisol regulation — reduces the effects of chronic stress",
+        "Supports heart health and healthy blood pressure",
+        "Anti-inflammatory and antioxidant protection",
+        "Mood support — reduces anxiety and promotes calm focus",
+        "Liver protection and detoxification support"
+      ],
+      bestFor: "stress, anxiety, sleep, insomnia, cortisol, relaxation, adaptogen, immune, heart health, mood, burnout, fatigue, vitality, longevity",
+      price: "Rs. 3,349.00",
+      image: "https://mycenza-pk.myshopify.com/cdn/shop/files/red-reishi-capsules.jpg"
+    },
+    {
       title: "Turkey Tail Capsules 1000MG",
-      url: "https://mycenza.pk/products/turkey-tail-capsules-immune-gut-support",
-      description: "Trametes versicolor fruiting body extract containing PSK and PSP compounds — among the most researched mushroom compounds.",
-      benefits: ["Gut microbiome support", "Deep immune modulation", "PSK and PSP compounds", "Digestive health", "Recovery support"],
-      bestFor: "gut health, digestion, immunity, microbiome, recovery, bloating, IBS",
+      url: "https://mycenza.pk/products/turkey-tail-capsules-immune-gut-support-1000mg",
+      description: `Turkey Tail (Trametes versicolor) is the most clinically researched medicinal mushroom in the world. MYCENZA's Turkey Tail capsules deliver 1000mg of 100% fruiting body extract containing PSK (Polysaccharide-K) and PSP (Polysaccharide-Peptide) — the two most studied immune-active compounds in mushroom science. PSK is so well-established that it is approved as a complementary cancer therapy adjunct in Japan. Turkey Tail directly feeds beneficial gut bacteria (Lactobacillus and Bifidobacterium strains), making it one of the most effective prebiotic mushrooms. A healthy gut is foundational to immunity, mood, digestion, and overall health.`,
+      benefits: [
+        "Deep immune system activation via PSK and PSP compounds",
+        "Powerful prebiotic — feeds good gut bacteria directly",
+        "Gut microbiome restoration and diversity support",
+        "Digestive health — reduces bloating, improves bowel regularity",
+        "Post-antibiotic gut recovery",
+        "Supports the gut-brain axis (mood and mental clarity via gut health)",
+        "Anti-inflammatory in the gut lining",
+        "Recovery support after illness or intense physical exertion"
+      ],
+      bestFor: "gut health, digestion, microbiome, immunity, bloating, IBS, bowel health, prebiotics, recovery, antibiotic recovery, leaky gut, inflammation",
       price: "Rs. 3,349.00",
       image: "https://mycenza-pk.myshopify.com/cdn/shop/files/turkey-tail-capsules.jpg"
-    },
-    {
-      title: "Lion's Mane Capsules 1000MG",
-      url: "https://mycenza.pk/products/lions-mane-capsules-cognitive-support",
-      description: "Hericium erinaceus fruiting body extract. Stimulates Nerve Growth Factor (NGF) production for brain and nerve health.",
-      benefits: ["Cognitive function", "Mental clarity & focus", "Memory support", "Nerve regeneration", "Mood balance"],
-      bestFor: "brain fog, focus, memory, cognition, anxiety, depression, nerve health, study, work performance",
-      price: "Rs. 3,349.00",
-      image: "https://mycenza-pk.myshopify.com/cdn/shop/files/lions-mane-capsules.jpg"
-    },
-    {
-      title: "Reishi Mushroom Capsules 1000MG",
-      url: "https://mycenza.pk/products/reishi-mushroom-capsules-stress-sleep",
-      description: "Ganoderma lucidum fruiting body extract — the 'Mushroom of Immortality'. Contains triterpenes and beta-glucans.",
-      benefits: ["Stress relief & adaptogen", "Sleep quality improvement", "Immune regulation", "Cortisol balance", "Longevity support"],
-      bestFor: "stress, anxiety, sleep, insomnia, cortisol, relaxation, adaptogen, longevity, immune",
-      price: "Rs. 3,349.00",
-      image: "https://mycenza-pk.myshopify.com/cdn/shop/files/reishi-mushroom-capsules.jpg"
-    },
-    {
-      title: "Cordyceps Capsules 1000MG",
-      url: "https://mycenza.pk/products/cordyceps-capsules-energy-performance",
-      description: "Cordyceps militaris fruiting body extract. Boosts ATP production and oxygen utilization for peak physical performance.",
-      benefits: ["Athletic performance", "Energy & stamina", "VO2 max support", "Libido & vitality", "Lung function"],
-      bestFor: "energy, fatigue, athletic performance, endurance, stamina, libido, testosterone, workout, gym",
-      price: "Rs. 3,349.00",
-      image: "https://mycenza-pk.myshopify.com/cdn/shop/files/cordyceps-capsules.jpg"
-    },
-    {
-      title: "MYCENZA Immunity Stack Bundle",
-      url: "https://mycenza.pk/products/immunity-stack-bundle",
-      description: "Chaga + Turkey Tail + Reishi bundle for complete immune system support and daily wellness.",
-      benefits: ["Complete immune coverage", "Antioxidant & anti-inflammatory", "Gut and microbiome support", "Stress resilience"],
-      bestFor: "immunity, bundle, value, complete health, immune boost, sick, virus, infection",
-      price: "Rs. 8,499.00",
-      image: "https://mycenza-pk.myshopify.com/cdn/shop/files/immunity-stack-bundle.jpg"
-    },
-    {
-      title: "MYCENZA Performance Stack Bundle",
-      url: "https://mycenza.pk/products/performance-stack-bundle",
-      description: "Lion's Mane + Cordyceps bundle for mental and physical peak performance.",
-      benefits: ["Brain + body performance", "Focus and stamina combined", "Study and training support"],
-      bestFor: "performance, bundle, energy and focus, gym and study, athlete, student",
-      price: "Rs. 5,999.00",
-      image: "https://mycenza-pk.myshopify.com/cdn/shop/files/performance-stack-bundle.jpg"
     }
   ];
 
-  /* ── SYSTEM PROMPT ── */
-  const systemPrompt = `You are Zara, a warm and knowledgeable wellness guide for MYCENZA — a premium mushroom supplement brand based in Pakistan. Your role is to understand the customer's health concern and recommend the most suitable MYCENZA product(s).
+  /* ─────────────────────────────────────────
+     SYSTEM PROMPT
+  ───────────────────────────────────────── */
+  const systemPrompt = `You are Zara, an expert wellness guide and supplement advisor for MYCENZA — a premium medicinal mushroom supplement brand based in Pakistan. You are knowledgeable, warm, educational, and genuinely helpful.
 
-MYCENZA PRODUCT CATALOG:
-${products.map((p, i) => `
-${i + 1}. ${p.title} — ${p.price}
-   Best for: ${p.bestFor}
-   Benefits: ${p.benefits.join(', ')}
-   URL: ${p.url}
-`).join('')}
+Your personality:
+- You explain things in depth like a knowledgeable friend who is also a nutritionist
+- You explain the science behind HOW and WHY a mushroom works, not just that it works
+- You are conversational, empathetic, and curious about the customer's specific situation
+- You give rich, detailed answers — never short, clipped one-liners
+- You never give medical diagnoses or tell someone to stop prescribed medication
+- You always recommend consulting a doctor for serious conditions, but you still give rich, useful information
 
-GUIDELINES:
-- Be warm, empathetic, and science-informed (never medical advice)
-- Ask a clarifying question if the concern is vague
-- Recommend 1–3 most relevant products based on the user's concern
-- Keep your answer concise (2–4 sentences max)
-- Always end with a call to action (e.g. "Would you like to learn more?")
-- Never invent products outside the catalog above
-- If no product fits, say so honestly and suggest contacting support
+MYCENZA CURRENT PRODUCT RANGE — ONLY these 3 products exist. Never recommend or invent others:
 
-RESPONSE FORMAT — you MUST respond with valid JSON only, no markdown, no extra text:
+1. CHAGA MUSHROOM CAPSULES 1000MG — Rs. 3,349.00
+   URL: ${products[0].url}
+   About: ${products[0].description}
+   Key benefits: ${products[0].benefits.join(' | ')}
+   Best for: ${products[0].bestFor}
+
+2. RED REISHI CAPSULES 1000MG — Rs. 3,349.00
+   URL: ${products[1].url}
+   About: ${products[1].description}
+   Key benefits: ${products[1].benefits.join(' | ')}
+   Best for: ${products[1].bestFor}
+
+3. TURKEY TAIL CAPSULES 1000MG — Rs. 3,349.00
+   URL: ${products[2].url}
+   About: ${products[2].description}
+   Key benefits: ${products[2].benefits.join(' | ')}
+   Best for: ${products[2].bestFor}
+
+HOW TO RESPOND:
+- Give thorough, educational, multi-sentence answers. Explain the mechanism — HOW the mushroom works at a biological level
+- If someone mentions a health concern (e.g. stress, gut issues, low immunity), first acknowledge their concern with empathy, then explain which product helps and exactly why it helps — the compounds involved, the biological pathway, what they can expect
+- Write in natural paragraphs. Use line breaks between paragraphs (\\n\\n in JSON)
+- If the question is general (e.g. "what are medicinal mushrooms?"), give a thorough educational answer and naturally introduce relevant MYCENZA products at the end
+- If comparing products, clearly explain the differences and help them decide based on their specific situation
+- Ask a follow-up question when it would help you personalise the recommendation better
+- End with something that invites further questions or a gentle call-to-action like "Would you like to explore [product] further?"
+- For questions about dosage, timing, stacking: give clear practical guidance based on general mushroom supplement best practices
+- For questions unrelated to wellness/supplements: politely redirect back to how you can help them with their health goals
+
+SAFETY RULES:
+- Never claim any product cures or treats a disease
+- For serious medical conditions (cancer, diabetes, autoimmune etc.), recommend consulting a doctor AND explain how the mushroom may complement (not replace) their treatment
+- Never invent products outside the 3 listed above
+- If their concern truly doesn't match any product, be honest and suggest they email support@mycenza.pk
+
+RESPONSE FORMAT:
+You MUST respond with valid JSON only. No markdown fences. No extra text before or after the JSON object.
 {
-  "answer": "Your conversational reply here",
+  "answer": "Your full detailed conversational reply. Multiple paragraphs allowed. Use \\n\\n between paragraphs for spacing.",
   "recommended_products": [
     {
-      "title": "exact product title from catalog",
-      "url": "exact url from catalog",
-      "image": "exact image url from catalog",
-      "price": "exact price from catalog",
-      "reason": "one short sentence why this product fits their concern"
+      "title": "exact product title from the catalog above",
+      "url": "exact url from the catalog above",
+      "image": "exact image url from the catalog above",
+      "price": "exact price from the catalog above",
+      "reason": "one sentence explaining why this specific product fits their concern"
     }
   ]
 }
 
-If no specific products are recommended (e.g. general question), return "recommended_products": []`;
+If no product recommendation applies, return: "recommended_products": []`;
 
-  /* ── BUILD MESSAGES ── */
-  const messages = [];
+  /* ─────────────────────────────────────────
+     BUILD MESSAGES
+  ───────────────────────────────────────── */
+  const messages = [{ role: 'system', content: systemPrompt }];
 
-  // Add conversation history (cap at last 8 turns)
-  const recentHistory = history.slice(-8);
+  const recentHistory = history.slice(-10);
   for (const turn of recentHistory) {
     if (turn.role === 'user' || turn.role === 'assistant') {
-      messages.push({ role: turn.role, content: turn.content });
+      messages.push({ role: turn.role, content: String(turn.content) });
     }
   }
-
-  // Add current user message
   messages.push({ role: 'user', content: message });
 
-  /* ── CALL OPENROUTER ── */
-  try {
-    const openRouterRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://mycenza.pk',
-        'X-Title': 'MYCENZA Chat Bot'
-      },
-      body: JSON.stringify({
-        model: 'anthropic/claude-3-haiku',       // fast + cheap — change if needed
-        // model: 'openai/gpt-4o-mini',           // alternative
-        // model: 'meta-llama/llama-3.1-8b-instruct:free', // free tier fallback
-        max_tokens: 600,
-        temperature: 0.4,
-        system: systemPrompt,
-        messages: messages,
-        response_format: { type: 'json_object' } // enforce JSON output
-      })
-    });
+  /* ─────────────────────────────────────────
+     OPENROUTER API CALL
+     Priority order of free models (swap if one is down):
+       1. deepseek/deepseek-chat-v3-0324:free  — best quality free model
+       2. meta-llama/llama-3.3-70b-instruct:free
+       3. google/gemini-2.0-flash-exp:free
+       4. qwen/qwen3-235b-a22b:free
+  ───────────────────────────────────────── */
+  const MODELS = [
+    'deepseek/deepseek-chat-v3-0324:free',
+    'meta-llama/llama-3.3-70b-instruct:free',
+    'google/gemini-2.0-flash-exp:free'
+  ];
 
-    if (!openRouterRes.ok) {
-      const errText = await openRouterRes.text();
-      console.error('[MYCENZA] OpenRouter error:', openRouterRes.status, errText);
-      return res.status(502).json({
-        answer: "I'm having a moment — please try again in a few seconds.",
-        recommended_products: []
-      });
-    }
+  let lastError = null;
 
-    const orData = await openRouterRes.json();
-    const rawContent = orData?.choices?.[0]?.message?.content || '';
-
-    /* ── PARSE JSON RESPONSE ── */
-    let parsed;
+  for (const model of MODELS) {
     try {
-      // Strip markdown fences if model added them despite json_object mode
-      const clean = rawContent.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
-      parsed = JSON.parse(clean);
-    } catch (parseErr) {
-      console.warn('[MYCENZA] JSON parse failed, raw:', rawContent);
-      // Fallback: return raw text as answer with no products
-      return res.status(200).json({
-        answer: rawContent || "I couldn't understand that. Could you rephrase your question?",
-        recommended_products: []
+      const orRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': 'https://mycenza.pk',
+          'X-Title': 'MYCENZA Zara Chat Assistant'
+        },
+        body: JSON.stringify({
+          model,
+          max_tokens: 1200,
+          temperature: 0.65,
+          messages
+        })
       });
+
+      if (!orRes.ok) {
+        const errText = await orRes.text();
+        console.warn(`[MYCENZA] ${model} failed (${orRes.status}):`, errText.substring(0, 200));
+        lastError = `HTTP ${orRes.status}`;
+        continue; // try next model
+      }
+
+      const orData = await orRes.json();
+      const rawContent = orData?.choices?.[0]?.message?.content || '';
+
+      if (!rawContent) {
+        console.warn(`[MYCENZA] ${model} returned empty content`);
+        lastError = 'empty response';
+        continue;
+      }
+
+      /* ── PARSE JSON ── */
+      let parsed;
+      try {
+        const clean = rawContent
+          .replace(/^```json\s*/im, '')
+          .replace(/^```\s*/im, '')
+          .replace(/```\s*$/im, '')
+          .trim();
+        parsed = JSON.parse(clean);
+      } catch (parseErr) {
+        console.warn(`[MYCENZA] ${model} JSON parse failed. Returning raw.`);
+        // If JSON parse fails, return the raw text — still useful to the user
+        return res.status(200).json({
+          answer: rawContent,
+          recommended_products: []
+        });
+      }
+
+      /* ── ENRICH PRODUCT DATA from catalog ── */
+      const enriched = (parsed.recommended_products || []).map(rec => {
+        const needle = (rec.title || '').toLowerCase().slice(0, 12);
+        const match = products.find(p => p.title.toLowerCase().includes(needle));
+        return {
+          title:  rec.title  || match?.title  || '',
+          url:    rec.url    || match?.url    || '#',
+          image:  rec.image  || match?.image  || '',
+          price:  rec.price  || match?.price  || '',
+          reason: rec.reason || ''
+        };
+      }).filter(p => p.title);
+
+      return res.status(200).json({
+        answer: parsed.answer || "How can I help you with your wellness goals today?",
+        recommended_products: enriched
+      });
+
+    } catch (err) {
+      console.error(`[MYCENZA] ${model} threw error:`, err.message);
+      lastError = err.message;
+      // continue to next model
     }
-
-    /* ── ENRICH PRODUCTS (match catalog data to fill missing fields) ── */
-    const enriched = (parsed.recommended_products || []).map(rec => {
-      const match = products.find(p =>
-        p.title.toLowerCase() === (rec.title || '').toLowerCase() ||
-        (p.url && rec.url && p.url === rec.url)
-      );
-      return {
-        title: rec.title || (match?.title ?? ''),
-        url:   rec.url   || (match?.url   ?? '#'),
-        image: rec.image || (match?.image ?? ''),
-        price: rec.price || (match?.price ?? ''),
-        reason: rec.reason || ''
-      };
-    });
-
-    return res.status(200).json({
-      answer: parsed.answer || "How can I help you today?",
-      recommended_products: enriched
-    });
-
-  } catch (err) {
-    console.error('[MYCENZA] Unexpected error:', err);
-    return res.status(500).json({
-      answer: "Something went wrong on my end. Please try again shortly.",
-      recommended_products: []
-    });
   }
+
+  /* All models failed */
+  console.error('[MYCENZA] All models failed. Last error:', lastError);
+  return res.status(200).json({
+    answer: "I'm having a moment right now. Please try again in a few seconds — I'll be back shortly!",
+    recommended_products: []
+  });
 };
